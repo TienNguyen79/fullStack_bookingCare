@@ -1,0 +1,31 @@
+{
+  "name": "backend_bookingcare",
+  "version": "1.0.0",
+  "description": "backend booking care",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec babel-node src/server.js"
+  },
+  "keywords": [
+    "express-js",
+    "bookingCare"
+  ],
+  "author": "nguyenmanhtien",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mysql2": "^2.2.5",
+    "nodemon": "^3.0.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.10",
+    "sequelize": "^6.36.0",
+    "sequelize-cli": "^6.2.0"
+  }
+}
