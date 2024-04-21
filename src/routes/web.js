@@ -10,7 +10,7 @@ import {
 import doctorController from "../controllers/doctorController";
 import authController from "../controllers/authController";
 import middlewareController from "../controllers/middlewareController";
-
+import { verifyEmail } from "../services/authService";
 let router = express.Router();
 
 const initWebRouter = (app) => {
@@ -34,6 +34,10 @@ const initWebRouter = (app) => {
     middlewareController.verifyToken,
     authController.handleLogout
   );
+
+  router.post("/sendMail", authController.handleSendMail);
+  router.post("/forgotPass", authController.handleForgotPassword);
+  router.get("/verify", verifyEmail);
 
   return app.use("/v1/api", router);
 };

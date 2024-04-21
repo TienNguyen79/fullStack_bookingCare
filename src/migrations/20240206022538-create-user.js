@@ -38,6 +38,9 @@ module.exports = {
       positionId: {
         type: Sequelize.STRING,
       },
+      email_verified_at: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -23,6 +23,7 @@ module.exports = {
         image: "imag1",
         roleId: "R1",
         positionId: "Doctor",
+        email_verified_at: false,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

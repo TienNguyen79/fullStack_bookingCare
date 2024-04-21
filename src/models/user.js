@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       image: DataTypes.STRING,
       roleId: DataTypes.STRING,
       positionId: DataTypes.STRING,
+      email_verified_at: DataTypes.BOOLEAN,
     },
     {
       sequelize,

@@ -4,16 +4,16 @@ import {
   LoginService,
   refreshTokenService,
   LogoutService,
+  sendMailService,
+  forgotPassService,
 } from "../services/authService";
 import jwt from "jsonwebtoken";
 
 const registerUser = async (req, res) => {
   try {
-    let results = await registerService(req.body);
+    let results = await registerService(req.body, res);
 
-    return res
-      .status(200)
-      .json({ ms: "Register successfully!", data: results });
+    return results;
   } catch (error) {
     res.status(500).json(error);
   }
@@ -45,9 +45,30 @@ const handleLogout = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+const handleSendMail = async (req, res) => {
+  try {
+    let results = await sendMailService(req, res);
+    return results;
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+const handleForgotPassword = async (req, res) => {
+  try {
+    let results = await forgotPassService(req, res);
+    return results;
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 module.exports = {
   registerUser: registerUser,
   loginUser: loginUser,
   handleRefreshToken: handleRefreshToken,
   handleLogout: handleLogout,
+  handleSendMail: handleSendMail,
+  handleForgotPassword: handleForgotPassword,
 };
