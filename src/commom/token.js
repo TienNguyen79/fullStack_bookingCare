@@ -14,7 +14,7 @@ export function generateAccessToken(payload) {
 
 export function generateRefreshToken(id) {
   const signOption = {
-    expiresIn: "24h",
+    expiresIn: "7d",
     algorithm: "RS256",
   };
 

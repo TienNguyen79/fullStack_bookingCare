@@ -93,11 +93,13 @@ const LoginService = async (data, res) => {
 
       refreshTokensTemp.push(refreshToken);
 
+      const expiryDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); //thời gian cookie sống 7d
+
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: false,
-        path: "/",
-        samsite: "strict",
+        sameSite: "",
+        expires: expiryDate,
       });
 
       const { password, ...rest } = user;
@@ -115,6 +117,7 @@ const LoginService = async (data, res) => {
 
 const refreshTokenService = async (req, res) => {
   const refreshToken = req.cookies.refreshToken; // lấy refreshToken trong cookie xử lý ở login
+  console.log("🚀 ~ refreshTokenService ~ refreshToken:", refreshToken);
 
   if (!refreshToken) return res.status(401).json("You are not authenticated!");
 
@@ -150,11 +153,20 @@ const refreshTokenService = async (req, res) => {
     const accessToken = generateAccessToken(payload);
     const newRefreshToken = generateRefreshToken(id);
     refreshTokensTemp.push(newRefreshToken);
+    // res.cookie("refreshToken", newRefreshToken, {
+    //   httpOnly: true,
+    //   secure: false,
+    //   path: "/",
+    //   samsite: "strict",
+    // });
+
+    const expiryDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); //thời gian cookie sống 7d
+
     res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true,
       secure: false,
-      path: "/",
-      samsite: "strict",
+      sameSite: "",
+      expires: expiryDate,
     });
     return res.status(200).json({ accessToken: accessToken });
   });
@@ -178,13 +190,18 @@ const sendMailService = async (req, res) => {
           `${process.env.APP_URL}/verify?email=${email}&token=${hashedEmail}`
         );
 
-        // res.cookie("tokenForgotPass", hashedEmail, {
+        res.cookie("tokenForgotPass", hashedEmail, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "",
+          maxAge: 30000,
+        });
+
+        // res.cookie("refreshToken", newRefreshToken, {
         //   httpOnly: true,
         //   secure: false,
-        //   path: "/",
-        //   domain: "localhost",
-        //   sameSite: "strict",
-        //   maxAge: 30000,
+        //   sameSite: "",
+        //   expires: expiryDate,
         // });
 
         sendMail(
@@ -234,8 +251,10 @@ const verifyEmail = (req, res) => {
 };
 
 const forgotPassService = async (req, res) => {
-  // const tokenForgotPass = req.cookies.tokenForgotPass;
-  // console.log("🚀 ~ forgotPassService ~ tokenForgotPass:", tokenForgotPass);
+  const tokenForgotPass = req.cookies.tokenForgotPass;
+
+  console.log("🚀 ~ forgotPassService ~ tokenForgotPass:", tokenForgotPass);
+  if (!tokenForgotPass) return res.status(401).json("Token đã hết hạn!");
   const { email, password, token } = req.body;
   try {
     const response = await db.User.findOne({

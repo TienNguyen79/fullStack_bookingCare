@@ -11,14 +11,19 @@ const port = process.env.PORT || 8888; //port
 //config app
 
 //cho phép phía FE gọi api
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // cho phép nhận cookie bên phía client
+  })
+);
+
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
 
-app.use(cors());
 app.use(cookieParser());
 
 //config req.body --để lấy data từ form
